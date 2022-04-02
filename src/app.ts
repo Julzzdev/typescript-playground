@@ -1,48 +1,35 @@
-// * In OOP the idea is to be able to work with (real-life) entities in your code
-// * An object is the thing you work with in code
-// * A class is a blueprint for objects
+// type AddFn = (a: number, b: number) => number
+interface AddFn {
+    (a: number, b: number): number
+}
 
-class Department {
-    // private name: string
-    private employees: string[] = []
+let add: AddFn
 
-    constructor(private readonly id: string, public name: string) {
-        // this.name = n
+interface Named {
+    readonly name?: string
+    outputName?: string
+}
+
+interface Greetable extends Named {
+    greet(phrase: string): void
+}
+
+class Person implements Greetable {
+    name?: string
+    age = 26
+    constructor(n?: string) {
+        if (n){
+            this.name = n
+        }
     }
 
-    describe(this: Department) {
-        console.log(`Department (${this.id}) ${this.name}`)
-    }
-
-    addEmployee(employee: string) {
-        this.employees.push(employee)
-    }
-
-    printEmployees() {
-        console.log(this.employees.length)
-        console.log(this.employees)
+    greet(phrase: string) {
+        console.log(`${phrase} ${this.name}`)
     }
 }
 
-class ITDepartment extends Department {
-    constructor(id: string, public admins: string[]) {
-        super(id, 'IT')
-        this.admins = admins
-    }
-}
+let user1: Greetable
 
-const accounting = new Department('DID001','Accounting')
-accounting.addEmployee('Julzz')
-accounting.addEmployee('Dingo')
+user1 = new Person()
 
-const it = new ITDepartment('ITD002', ['Tachibana'])
-
-// accounting.employees[2] = 'Monji' // * Trick we must try to avoid with the private property definition
-
-accounting.printEmployees()
-
-accounting.describe()
-console.log(it.admins)
-
-// const accountCopy = { name: 'HR', describe: accounting.describe }
-// accountCopy.describe()
+user1.greet('Hello')
